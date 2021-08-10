@@ -1,0 +1,917 @@
+classdef CapstoneHMI < matlab.apps.AppBase 
+
+ 
+
+% Properties that correspond to app components 
+
+properties (Access = public) 
+
+UIFigure matlab.ui.Figure 
+
+WristPositioningDeviceLabel matlab.ui.control.Label 
+
+TabGroup matlab.ui.container.TabGroup 
+
+DartThrowArcTab matlab.ui.container.Tab 
+
+DisplacementdegEditFieldLabel matlab.ui.control.Label 
+
+DisplacementdegEditField matlab.ui.control.NumericEditField 
+
+AvgVelocitydegsecEditFieldLabel matlab.ui.control.Label 
+
+AvgVelocitydegsecEditField matlab.ui.control.NumericEditField 
+
+AvgForceNEditFieldLabel matlab.ui.control.Label 
+
+AvgForceNEditField matlab.ui.control.NumericEditField 
+
+AvgTorqueNmEditFieldLabel matlab.ui.control.Label 
+
+AvgTorqueNmEditField matlab.ui.control.NumericEditField 
+
+PlotDropDownLabel matlab.ui.control.Label 
+
+PlotDropDown matlab.ui.control.DropDown 
+
+LoadButton matlab.ui.control.Button 
+
+ExportButton matlab.ui.control.Button 
+
+UITable matlab.ui.control.Table 
+
+UIAxes matlab.ui.control.UIAxes 
+
+FlexionExtensionTab_2 matlab.ui.container.Tab 
+
+DisplacementdegEditField_2Label matlab.ui.control.Label 
+
+DisplacementdegEditField_2 matlab.ui.control.NumericEditField 
+
+VelocitydegsecEditFieldLabel matlab.ui.control.Label 
+
+VelocitydegsecEditField matlab.ui.control.NumericEditField 
+
+ForceNEditField_3Label matlab.ui.control.Label 
+
+ForceNEditField_3 matlab.ui.control.NumericEditField 
+
+TorqueNmEditField_3Label matlab.ui.control.Label 
+
+TorqueNmEditField_3 matlab.ui.control.NumericEditField 
+
+PlotDropDown_7Label matlab.ui.control.Label 
+
+PlotDropDown_7 matlab.ui.control.DropDown 
+
+LoadButton_3 matlab.ui.control.Button 
+
+ExportButton_3 matlab.ui.control.Button 
+
+UITable_3 matlab.ui.control.Table 
+
+UIAxes_5 matlab.ui.control.UIAxes 
+
+RadialUlnarDeviationTab_2 matlab.ui.container.Tab 
+
+DisplacementdegEditField_3Label matlab.ui.control.Label 
+
+DisplacementdegEditField_3 matlab.ui.control.NumericEditField 
+
+VelocitydegsecEditField_2Label matlab.ui.control.Label 
+
+VelocitydegsecEditField_2 matlab.ui.control.NumericEditField 
+
+ForceNEditField_2Label matlab.ui.control.Label 
+
+ForceNEditField_2 matlab.ui.control.NumericEditField 
+
+TorqueNmEditField_2Label matlab.ui.control.Label 
+
+TorqueNmEditField_2 matlab.ui.control.NumericEditField 
+
+PlotDropDown_6Label matlab.ui.control.Label 
+
+PlotDropDown_6 matlab.ui.control.DropDown 
+
+LoadButton_2 matlab.ui.control.Button 
+
+ExportButton_2 matlab.ui.control.Button 
+
+UITable_2 matlab.ui.control.Table 
+
+UIAxes_4 matlab.ui.control.UIAxes 
+
+End 
+
+ 
+
+properties (Access = private) 
+
+Time 
+
+Data 
+
+Position 
+
+Velocity 
+
+Force 
+
+Torque 
+
+Counter 
+
+End 
+
+ 
+
+% Callbacks that handle component events 
+
+methods (Access = private) 
+
+ 
+
+% Button pushed function: LoadButton 
+
+function LoadButtonPushed(app, event) 
+
+t = readtable('data.xlsx'); 
+
+%t = [app.Time(), app.Position(), app.Velocity(),app.Force(),app.Torque()]; 
+
+vars = {'Time','Position','Velocity','Force','Torque'}; 
+
+t = t(1:123,vars); 
+
+app.UITable.Data = t; 
+
+dropdown = app.PlotDropDown.Value; 
+
+switch dropdown 
+
+ 
+
+% case 'Position' 
+
+% assignin('base','Ampl', app.AmplitudeSlider.Value); 
+
+% simout = sim('SineWave_SL', 'StopTime', num2str(app.TimeSlider.Value)); 
+
+% plot(app.UIAxes, simout.SineWaveValue.Time, simout.SineWaveValue.Data); 
+
+%  
+
+% case 'Velocity' 
+
+% assignin('base','Ampl', app.AmplitudeSlider.Value); 
+
+% simout = sim('SineWave_SL', 'StopTime', num2str(app.TimeSlider.Value)); 
+
+% plot(app.UIAxes, simout.StepWaveValue.Time, simout.StepWaveValue.Data); 
+
+%  
+
+% case 'Force' 
+
+% assignin('base','Ampl', app.AmplitudeSlider.Value); 
+
+% simout = sim('SineWave_SL', 'StopTime', num2str(app.TimeSlider.Value)); 
+
+% plot(app.UIAxes, simout.ChirpWaveValue.Time, simout.ChirpWaveValue.Data); 
+
+%  
+
+% case 'Torque' 
+
+% assignin('base','Ampl', app.AmplitudeSlider.Value); 
+
+% simout = sim('SineWave_SL', 'StopTime', num2str(app.TimeSlider.Value)); 
+
+% plot(app.UIAxes, simout.SineWaveValue.Time, simout.SineWaveValue.Data); 
+
+ 
+
+case 'Position' 
+
+plot(app.UIAxes, t{:,'Time'}, t{:,'Time'}); 
+
+case 'Velocity' 
+
+plot(app.UIAxes, t{:,'Time'}, t{:,'Velocity'}); 
+
+case 'Force' 
+
+plot(app.UIAxes, t{:,'Time'}, t{:,'Force'}); 
+
+case 'Torque' 
+
+plot(app.UIAxes, t{:,'Time'}, t{:,'Torque'}); 
+
+end 
+
+ 
+
+app.DisplacementdegEditField.Value = 12; 
+
+app.AvgVelocitydegsecEditField.Value = 105.5; 
+
+app.AvgForceNEditField.Value = 5; 
+
+app.AvgTorqueNmEditField.Value = 0.109; 
+
+% app.Time = simout.SineWaveValue.Time; 
+
+% app.Position =simout.SineWaveValue.Data; 
+
+% app.Velocity = simout.SineWaveValue.Data; 
+
+% app.Force = simout.SineWaveValue.Data; 
+
+% app.Torque = simout.SineWaveValue.Data; 
+
+%assignin('base', 'Time', app.Time); 
+
+%assignin('base', 'Position', app.Position); 
+
+%assignin('base', 'Velocity', app.Velocity); 
+
+%assignin('base', 'Force', app.Force); 
+
+%assignin('base', 'Torque', app.Torque); 
+
+ 
+
+end  
+
+ 
+
+% Callback function 
+
+function TimeSliderValueChanging(app, event) 
+
+%changingValue = event.Value; 
+
+%smoothedData = smooth(app.Data,changingValue); 
+
+end 
+
+ 
+
+% Button pushed function: ExportButton 
+
+function ExportButtonPushed(app, event) 
+
+%assignin('base', 'Time', app.Time); 
+
+%assignin('base', 'Position', app.Position); 
+
+%assignin('base', 'Velocity', app.Velocity); 
+
+%assignin('base', 'Force', app.Force); 
+
+%assignin('base', 'Torque', app.Torque); 
+
+assignin('base', 'DataTable', app.UITable.Data); 
+
+% data = get(app.UITable.Data, 'data'); 
+
+% columns = get(app.UITable.ColumnName, 'columnname'); 
+
+% columns = reshape(columns, [1,5]); 
+
+% filename = 'some.xls'; 
+
+% xlswrite(filename, data, 1, 'A2'); 
+
+% xlswrite(filename, columns, 1, 'A1:D1'); 
+
+end 
+
+ 
+
+% Value changed function: DisplacementdegEditField 
+
+function DisplacementdegEditFieldValueChanged(app, event) 
+
+app.DisplacementdegEditField.Value = 1000; 
+
+end 
+
+ 
+
+% Cell edit callback: UITable 
+
+function UITableCellEdit(app, event) 
+
+indices = event.Indices; 
+
+newData = event.NewData; 
+
+end 
+
+end 
+
+ 
+
+% Component initialization 
+
+methods (Access = private) 
+
+ 
+
+% Create UIFigure and components 
+
+function createComponents(app) 
+
+ 
+
+% Create UIFigure and hide until all components are created 
+
+app.UIFigure = uifigure('Visible', 'off'); 
+
+app.UIFigure.Position = [100 100 1069 519]; 
+
+app.UIFigure.Name = 'UI Figure'; 
+
+ 
+
+% Create WristPositioningDeviceLabel 
+
+app.WristPositioningDeviceLabel = uilabel(app.UIFigure); 
+
+app.WristPositioningDeviceLabel.HorizontalAlignment = 'center'; 
+
+app.WristPositioningDeviceLabel.FontSize = 25; 
+
+app.WristPositioningDeviceLabel.FontWeight = 'bold'; 
+
+app.WristPositioningDeviceLabel.Position = [370 489 332 31]; 
+
+app.WristPositioningDeviceLabel.Text = 'Wrist Positioning Device'; 
+
+ 
+
+% Create TabGroup 
+
+app.TabGroup = uitabgroup(app.UIFigure); 
+
+app.TabGroup.Position = [19 26 1032 456]; 
+
+ 
+
+% Create DartThrowArcTab 
+
+app.DartThrowArcTab = uitab(app.TabGroup); 
+
+app.DartThrowArcTab.Title = 'Dart-Throw Arc'; 
+
+ 
+
+% Create DisplacementdegEditFieldLabel 
+
+app.DisplacementdegEditFieldLabel = uilabel(app.DartThrowArcTab); 
+
+app.DisplacementdegEditFieldLabel.HorizontalAlignment = 'right'; 
+
+app.DisplacementdegEditFieldLabel.Position = [11 331 135 22]; 
+
+app.DisplacementdegEditFieldLabel.Text = 'Displacement (deg)'; 
+
+ 
+
+% Create DisplacementdegEditField 
+
+app.DisplacementdegEditField = uieditfield(app.DartThrowArcTab, 'numeric'); 
+
+app.DisplacementdegEditField.ValueChangedFcn = createCallbackFcn(app, @DisplacementdegEditFieldValueChanged, true); 
+
+app.DisplacementdegEditField.Position = [163 331 100 22]; 
+
+% Create AvgVelocitydegsecEditFieldLabel 
+
+app.AvgVelocitydegsecEditFieldLabel = uilabel(app.DartThrowArcTab); 
+
+app.AvgVelocitydegsecEditFieldLabel.HorizontalAlignment = 'right'; 
+
+app.AvgVelocitydegsecEditFieldLabel.Position = [19 282 127 22]; 
+
+app.AvgVelocitydegsecEditFieldLabel.Text = 'Avg. Velocity (deg/sec)'; 
+
+% Create AvgVelocitydegsecEditField 
+
+app.AvgVelocitydegsecEditField = uieditfield(app.DartThrowArcTab, 'numeric'); 
+
+app.AvgVelocitydegsecEditField.Position = [163 282 100 22]; 
+
+ 
+
+% Create AvgForceNEditFieldLabel 
+
+app.AvgForceNEditFieldLabel = uilabel(app.DartThrowArcTab); 
+
+app.AvgForceNEditFieldLabel.HorizontalAlignment = 'right'; 
+
+app.AvgForceNEditFieldLabel.Position = [63 231 83 22]; 
+
+app.AvgForceNEditFieldLabel.Text = 'Avg. Force (N)'; 
+
+ 
+
+% Create AvgForceNEditField 
+
+app.AvgForceNEditField = uieditfield(app.DartThrowArcTab, 'numeric'); 
+
+app.AvgForceNEditField.Position = [163 231 100 22]; 
+
+ 
+
+% Create AvgTorqueNmEditFieldLabel 
+
+app.AvgTorqueNmEditFieldLabel = uilabel(app.DartThrowArcTab); 
+
+app.AvgTorqueNmEditFieldLabel.HorizontalAlignment = 'right'; 
+
+app.AvgTorqueNmEditFieldLabel.Position = [42 180 104 22]; 
+
+app.AvgTorqueNmEditFieldLabel.Text = 'Avg. Torque (N*m)'; 
+
+ 
+
+% Create AvgTorqueNmEditField 
+
+app.AvgTorqueNmEditField = uieditfield(app.DartThrowArcTab, 'numeric'); 
+
+app.AvgTorqueNmEditField.Position = [163 180 100 22]; 
+
+ 
+
+% Create PlotDropDownLabel 
+
+app.PlotDropDownLabel = uilabel(app.DartThrowArcTab); 
+
+app.PlotDropDownLabel.HorizontalAlignment = 'right'; 
+
+app.PlotDropDownLabel.Position = [388 378 26 22]; 
+
+app.PlotDropDownLabel.Text = 'Plot'; 
+
+ 
+
+% Create PlotDropDown 
+
+app.PlotDropDown = uidropdown(app.DartThrowArcTab); 
+
+app.PlotDropDown.Items = {'Position', 'Velocity', 'Force', 'Torque'}; 
+
+app.PlotDropDown.Position = [429 378 100 22]; 
+
+app.PlotDropDown.Value = 'Position'; 
+
+ 
+
+% Create LoadButton 
+
+app.LoadButton = uibutton(app.DartThrowArcTab, 'push'); 
+
+app.LoadButton.ButtonPushedFcn = createCallbackFcn(app, @LoadButtonPushed, true); 
+
+app.LoadButton.Position = [21 378 100 22]; 
+
+app.LoadButton.Text = 'Load'; 
+
+ 
+
+% Create ExportButton 
+
+app.ExportButton = uibutton(app.DartThrowArcTab, 'push'); 
+
+app.ExportButton.ButtonPushedFcn = createCallbackFcn(app, @ExportButtonPushed, true); 
+
+app.ExportButton.Position = [163 378 100 22]; 
+
+app.ExportButton.Text = 'Export'; 
+
+ 
+
+% Create UITable 
+
+app.UITable = uitable(app.DartThrowArcTab); 
+
+app.UITable.ColumnName = {'Time'; 'Position'; 'Velocity'; 'Force'; 'Torque'}; 
+
+app.UITable.ColumnWidth = {75, 75, 75, 75, 75}; 
+
+app.UITable.RowName = {}; 
+
+app.UITable.ColumnSortable = true; 
+
+app.UITable.ColumnEditable = true; 
+
+app.UITable.CellEditCallback = createCallbackFcn(app, @UITableCellEdit, true); 
+
+app.UITable.Position = [639 54 393 325]; 
+
+ 
+
+% Create UIAxes 
+
+app.UIAxes = uiaxes(app.DartThrowArcTab); 
+
+title(app.UIAxes, 'Data') 
+
+xlabel(app.UIAxes, 'Time') 
+
+ylabel(app.UIAxes, 'Amplitude ') 
+
+app.UIAxes.Position = [278 54 345 316]; 
+
+ 
+
+% Create FlexionExtensionTab_2 
+
+app.FlexionExtensionTab_2 = uitab(app.TabGroup); 
+
+app.FlexionExtensionTab_2.Title = 'Flexion-Extension'; 
+
+ 
+
+% Create DisplacementdegEditField_2Label 
+
+app.DisplacementdegEditField_2Label = uilabel(app.FlexionExtensionTab_2); 
+
+app.DisplacementdegEditField_2Label.HorizontalAlignment = 'right'; 
+
+app.DisplacementdegEditField_2Label.Position = [11 331 135 22]; 
+
+app.DisplacementdegEditField_2Label.Text = 'Displacement (deg)'; 
+
+ 
+
+% Create DisplacementdegEditField_2 
+
+app.DisplacementdegEditField_2 = uieditfield(app.FlexionExtensionTab_2, 'numeric'); 
+
+app.DisplacementdegEditField_2.Position = [163 331 100 22]; 
+
+ 
+
+% Create VelocitydegsecEditFieldLabel 
+
+app.VelocitydegsecEditFieldLabel = uilabel(app.FlexionExtensionTab_2); 
+
+app.VelocitydegsecEditFieldLabel.HorizontalAlignment = 'right'; 
+
+app.VelocitydegsecEditFieldLabel.Position = [46 282 100 22]; 
+
+app.VelocitydegsecEditFieldLabel.Text = 'Velocity (deg/sec)'; 
+
+ 
+
+% Create VelocitydegsecEditField 
+
+app.VelocitydegsecEditField = uieditfield(app.FlexionExtensionTab_2, 'numeric'); 
+
+app.VelocitydegsecEditField.Position = [163 282 100 22]; 
+
+ 
+
+% Create ForceNEditField_3Label 
+
+app.ForceNEditField_3Label = uilabel(app.FlexionExtensionTab_2); 
+
+app.ForceNEditField_3Label.HorizontalAlignment = 'right'; 
+
+app.ForceNEditField_3Label.Position = [90 231 56 22]; 
+
+app.ForceNEditField_3Label.Text = 'Force (N)'; 
+
+ 
+
+% Create ForceNEditField_3 
+
+app.ForceNEditField_3 = uieditfield(app.FlexionExtensionTab_2, 'numeric'); 
+
+app.ForceNEditField_3.Position = [163 231 100 22]; 
+
+ 
+
+% Create TorqueNmEditField_3Label 
+
+app.TorqueNmEditField_3Label = uilabel(app.FlexionExtensionTab_2); 
+
+app.TorqueNmEditField_3Label.HorizontalAlignment = 'right'; 
+
+app.TorqueNmEditField_3Label.Position = [69 180 77 22]; 
+
+app.TorqueNmEditField_3Label.Text = 'Torque (N*m)'; 
+
+ 
+
+% Create TorqueNmEditField_3 
+
+app.TorqueNmEditField_3 = uieditfield(app.FlexionExtensionTab_2, 'numeric'); 
+
+app.TorqueNmEditField_3.Position = [163 180 100 22]; 
+
+ 
+
+% Create PlotDropDown_7Label 
+
+app.PlotDropDown_7Label = uilabel(app.FlexionExtensionTab_2); 
+
+app.PlotDropDown_7Label.HorizontalAlignment = 'right'; 
+
+app.PlotDropDown_7Label.Position = [388 378 26 22]; 
+
+app.PlotDropDown_7Label.Text = 'Plot'; 
+
+ 
+
+% Create PlotDropDown_7 
+
+app.PlotDropDown_7 = uidropdown(app.FlexionExtensionTab_2); 
+
+app.PlotDropDown_7.Items = {'Position', 'Velocity', 'Force', 'Torque'}; 
+
+app.PlotDropDown_7.Position = [429 378 100 22]; 
+
+app.PlotDropDown_7.Value = 'Position'; 
+
+ 
+
+% Create LoadButton_3 
+
+app.LoadButton_3 = uibutton(app.FlexionExtensionTab_2, 'push'); 
+
+app.LoadButton_3.Position = [21 378 100 22]; 
+
+app.LoadButton_3.Text = 'Load'; 
+
+ 
+
+% Create ExportButton_3 
+
+app.ExportButton_3 = uibutton(app.FlexionExtensionTab_2, 'push'); 
+
+app.ExportButton_3.Position = [163 378 100 22]; 
+
+app.ExportButton_3.Text = 'Export'; 
+
+ 
+
+% Create UITable_3 
+
+app.UITable_3 = uitable(app.FlexionExtensionTab_2); 
+
+app.UITable_3.ColumnName = {'Time'; 'Position'; 'Velocity'; 'Force'; 'Torque'}; 
+
+app.UITable_3.ColumnWidth = {75, 75, 75, 75, 75}; 
+
+app.UITable_3.RowName = {}; 
+
+app.UITable_3.ColumnSortable = true; 
+
+app.UITable_3.ColumnEditable = true; 
+
+app.UITable_3.Position = [639 54 393 325]; 
+
+ 
+
+% Create UIAxes_5 
+
+app.UIAxes_5 = uiaxes(app.FlexionExtensionTab_2); 
+
+title(app.UIAxes_5, 'Data') 
+
+xlabel(app.UIAxes_5, 'Time') 
+
+ylabel(app.UIAxes_5, 'Amplitude ') 
+
+app.UIAxes_5.Position = [278 54 345 316]; 
+
+ 
+
+% Create RadialUlnarDeviationTab_2 
+
+app.RadialUlnarDeviationTab_2 = uitab(app.TabGroup); 
+
+app.RadialUlnarDeviationTab_2.Title = 'Radial-Ulnar Deviation'; 
+
+ 
+
+% Create DisplacementdegEditField_3Label 
+
+app.DisplacementdegEditField_3Label = uilabel(app.RadialUlnarDeviationTab_2); 
+
+app.DisplacementdegEditField_3Label.HorizontalAlignment = 'right'; 
+
+app.DisplacementdegEditField_3Label.Position = [11 331 135 22]; 
+
+app.DisplacementdegEditField_3Label.Text = 'Displacement (deg)'; 
+
+ 
+
+% Create DisplacementdegEditField_3 
+
+app.DisplacementdegEditField_3 = uieditfield(app.RadialUlnarDeviationTab_2, 'numeric'); 
+
+app.DisplacementdegEditField_3.Position = [163 331 100 22]; 
+
+ 
+
+% Create VelocitydegsecEditField_2Label 
+
+app.VelocitydegsecEditField_2Label = uilabel(app.RadialUlnarDeviationTab_2); 
+
+app.VelocitydegsecEditField_2Label.HorizontalAlignment = 'right'; 
+
+app.VelocitydegsecEditField_2Label.Position = [46 282 100 22]; 
+
+app.VelocitydegsecEditField_2Label.Text = 'Velocity (deg/sec)'; 
+
+ 
+
+% Create VelocitydegsecEditField_2 
+
+app.VelocitydegsecEditField_2 = uieditfield(app.RadialUlnarDeviationTab_2, 'numeric'); 
+
+app.VelocitydegsecEditField_2.Position = [163 282 100 22]; 
+
+ 
+
+% Create ForceNEditField_2Label 
+
+app.ForceNEditField_2Label = uilabel(app.RadialUlnarDeviationTab_2); 
+
+app.ForceNEditField_2Label.HorizontalAlignment = 'right'; 
+
+app.ForceNEditField_2Label.Position = [90 231 56 22]; 
+
+app.ForceNEditField_2Label.Text = 'Force (N)'; 
+
+ 
+
+% Create ForceNEditField_2 
+
+app.ForceNEditField_2 = uieditfield(app.RadialUlnarDeviationTab_2, 'numeric'); 
+
+app.ForceNEditField_2.Position = [163 231 100 22]; 
+
+ 
+
+% Create TorqueNmEditField_2Label 
+
+app.TorqueNmEditField_2Label = uilabel(app.RadialUlnarDeviationTab_2); 
+
+app.TorqueNmEditField_2Label.HorizontalAlignment = 'right'; 
+
+app.TorqueNmEditField_2Label.Position = [69 180 77 22]; 
+
+app.TorqueNmEditField_2Label.Text = 'Torque (N*m)'; 
+
+ 
+
+% Create TorqueNmEditField_2 
+
+app.TorqueNmEditField_2 = uieditfield(app.RadialUlnarDeviationTab_2, 'numeric'); 
+
+app.TorqueNmEditField_2.Position = [163 180 100 22]; 
+
+ 
+
+% Create PlotDropDown_6Label 
+
+app.PlotDropDown_6Label = uilabel(app.RadialUlnarDeviationTab_2); 
+
+app.PlotDropDown_6Label.HorizontalAlignment = 'right'; 
+
+app.PlotDropDown_6Label.Position = [388 378 26 22]; 
+
+app.PlotDropDown_6Label.Text = 'Plot'; 
+
+ 
+
+% Create PlotDropDown_6 
+
+app.PlotDropDown_6 = uidropdown(app.RadialUlnarDeviationTab_2); 
+
+app.PlotDropDown_6.Items = {'Position', 'Velocity', 'Force', 'Torque'}; 
+
+app.PlotDropDown_6.Position = [429 378 100 22]; 
+
+app.PlotDropDown_6.Value = 'Position'; 
+
+ 
+
+% Create LoadButton_2 
+
+app.LoadButton_2 = uibutton(app.RadialUlnarDeviationTab_2, 'push'); 
+
+app.LoadButton_2.Position = [21 378 100 22]; 
+
+app.LoadButton_2.Text = 'Load'; 
+
+ 
+
+% Create ExportButton_2 
+
+app.ExportButton_2 = uibutton(app.RadialUlnarDeviationTab_2, 'push'); 
+
+app.ExportButton_2.Position = [163 378 100 22]; 
+
+app.ExportButton_2.Text = 'Export'; 
+
+ 
+
+            % Create UITable_2 
+
+            app.UITable_2 = uitable(app.RadialUlnarDeviationTab_2); 
+
+            app.UITable_2.ColumnName = {'Time'; 'Position'; 'Velocity'; 'Force'; 'Torque'}; 
+
+            app.UITable_2.ColumnWidth = {75, 75, 75, 75, 75}; 
+
+            app.UITable_2.RowName = {}; 
+
+            app.UITable_2.ColumnSortable = true; 
+
+            app.UITable_2.ColumnEditable = true; 
+
+            app.UITable_2.Position = [639 54 393 325]; 
+
+ 
+
+            % Create UIAxes_4 
+
+            app.UIAxes_4 = uiaxes(app.RadialUlnarDeviationTab_2); 
+
+            title(app.UIAxes_4, 'Data') 
+
+            xlabel(app.UIAxes_4, 'Time') 
+
+            ylabel(app.UIAxes_4, 'Amplitude ') 
+
+            app.UIAxes_4.Position = [278 54 345 316]; 
+
+ 
+
+            % Show the figure after all components are created 
+
+            app.UIFigure.Visible = 'on'; 
+
+        end 
+
+    end 
+
+ 
+
+    % App creation and deletion 
+
+    methods (Access = public) 
+
+ 
+
+        % Construct app 
+
+        function app = CapstoneHMI 
+
+ 
+
+            % Create UIFigure and components 
+
+            createComponents(app) 
+
+ 
+
+            % Register the app with App Designer 
+
+            registerApp(app, app.UIFigure) 
+
+ 
+
+            if nargout == 0 
+
+                clear app 
+
+            end 
+
+        end 
+
+ 
+
+        % Code that executes before app deletion 
+
+        function delete(app) 
+
+ 
+
+            % Delete UIFigure when app is deleted 
+
+            delete(app.UIFigure) 
+
+        end 
+
+    end 
+
+end 
